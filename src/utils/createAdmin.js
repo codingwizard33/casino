@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import User from '../models/User.js'
+import CoinWallet from '../models/CoinWallet.js';
 
 const createAdmin = async () => {
   try {
@@ -19,6 +20,13 @@ const createAdmin = async () => {
         user_role: 'admin'
       });
       await newUser.save();
+
+      const coinWallet = new CoinWallet({
+        user_id: newUser._id,
+        balance: 5000
+      });
+      await coinWallet.save();
+
       console.log('User created successfully!');
     } else {
       console.log('User already exists.');

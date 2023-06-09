@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import CoinWallet from '../models/CoinWallet.js';
 import sgMail from '@sendgrid/mail';
 
 const registerUser = async (req, res) => {
@@ -30,6 +31,13 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       user_role: 'player'
     });
+
+    // create coin wallet
+    const coinWallet = new CoinWallet({
+      user_id: newUser._id,
+      balance: 0
+    });
+    await coinWallet.save();
 
     // Save the user to the database
     await user.save();

@@ -3,6 +3,7 @@ import sgMail from '@sendgrid/mail';
 import bcrypt from 'bcrypt';
 import { generateRandomPassword } from '../../utils/generateRandomPassword.js';
 import jwt from 'jsonwebtoken';
+import CoinWallet from '../../models/CoinWallet.js';
 
 const createAgent = async (req, res) => {
   const { user_name, email, phone_number, full_name, country, date_of_birth } = req.body;
@@ -28,6 +29,13 @@ const createAgent = async (req, res) => {
     user_role: 'agent'
   });
   await newUser.save();
+
+  // create coin wallet
+  const coinWallet = new CoinWallet({
+    user_id: newUser._id,
+    balance: 0
+  });
+  await coinWallet.save();
 
   // Verify the token
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
