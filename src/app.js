@@ -24,6 +24,11 @@ connectDatabase();
 createAdmin();
 
 // Routes
+app.use('/', (req, res) => {
+  return res.json({
+    message: 'Successful!'
+  });
+});
 app.use('/auth', authRoutes);
 app.use('/pass', forgotRoutes);
 app.use('/user', userRoutes);
