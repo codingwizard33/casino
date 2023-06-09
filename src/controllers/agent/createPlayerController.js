@@ -5,7 +5,7 @@ import { generateRandomPassword } from '../../utils/generateRandomPassword.js';
 import jwt from 'jsonwebtoken';
 
 const createPlayer = async (req, res) => {
-  const { user_name, email, phone_number, first_name, last_name, country, date_of_birth } = req.body;
+  const { user_name, email, phone_number, full_name, country, date_of_birth } = req.body;
   const token = req.header('token');
 
   const password = generateRandomPassword();
@@ -20,8 +20,7 @@ const createPlayer = async (req, res) => {
     email: email,
     phone_number: phone_number,
     password: hashedPassword,
-    first_name: first_name,
-    last_name: last_name,
+    full_name: full_name,
     country: country,
     date_of_birth: date_of_birth,
     isVerified: true,

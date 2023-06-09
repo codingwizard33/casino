@@ -97,7 +97,7 @@ const verifyEmail = async (req, res) => {
 
 const completeRegistration = async (req, res) => {
   try {
-    const { first_name, last_name, country, date_of_birth } = req.body;
+    const { full_name, country, date_of_birth } = req.body;
     const token = req.header('token');
 
     // Verify the token
@@ -115,8 +115,7 @@ const completeRegistration = async (req, res) => {
     }
 
     // Update the user data
-    user.first_name = first_name;
-    user.last_name = last_name;
+    user.full_name = full_name;
     user.country = country;
     user.date_of_birth = date_of_birth;
     await user.save();
