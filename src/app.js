@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Connect to MongoDB
 connectDatabase();
@@ -24,11 +24,6 @@ connectDatabase();
 createAdmin();
 
 // Routes
-app.use('/', (req, res) => {
-  return res.json({
-    message: 'Successful!'
-  });
-});
 app.use('/auth', authRoutes);
 app.use('/pass', forgotRoutes);
 app.use('/user', userRoutes);

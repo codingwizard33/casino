@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import CoinWallet from '../models/CoinWallet.js';
 import sgMail from '@sendgrid/mail';
+import { startSession } from 'mongoose';
 
 const registerUser = async (req, res) => {
   try {
@@ -23,6 +24,9 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const session = await startSession();
+    session.startTransaction();
+
     // Create a new user
     const user = new User({
       user_name,
@@ -31,16 +35,19 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       user_role: 'player'
     });
+    // Save the user to the database
+    await user.save();
 
     // create coin wallet
     const coinWallet = new CoinWallet({
-      user_id: newUser._id,
+      user_id: user._id,
       balance: 0
     });
     await coinWallet.save();
+    
+    await session.commitTransaction();
 
-    // Save the user to the database
-    await user.save();
+    session.endSession();
 
     // Generate verification token
     const verificationToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -68,10 +75,12 @@ const registerUser = async (req, res) => {
 
     await sgMail.send(message);
 
-    res.status(201).json({ message: 'User registered successfully', verificationToken });
+    return res.status(201).json({ message: 'User registered successfully', verificationToken });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.error(error);
-    res.status(500).json({ error: error });
+    return res.status(500).json({ error: error });
   }
 };
 
@@ -105,7 +114,7 @@ const verifyEmail = async (req, res) => {
 
 const completeRegistration = async (req, res) => {
   try {
-    const { full_name, country, date_of_birth } = req.body;
+    const { full_name, country, date_of_birth, user_image } = req.body;
     const token = req.header('token');
 
     // Verify the token
@@ -126,6 +135,7 @@ const completeRegistration = async (req, res) => {
     user.full_name = full_name;
     user.country = country;
     user.date_of_birth = date_of_birth;
+    user.user_image = user_image;
     await user.save();
 
     res.json({ message: 'User data completed successfully' });
