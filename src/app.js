@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import connectDatabase from './config/database.js';
 import createAdmin from './utils/createAdmin.js';
 import authRoutes from './routes/auth.js';
@@ -22,6 +23,10 @@ connectDatabase();
 
 // Create user admin if not exist only for dev mode
 createAdmin();
+
+app.use(cors({
+  origin: '*'
+}));
 
 // Routes
 app.use('/auth', authRoutes);
