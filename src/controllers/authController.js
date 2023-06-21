@@ -166,18 +166,18 @@ const loginUser = async (req, res) => {
 
     // Checking user role
     if (user.user_role === 'admin') {
-      return res.json({ admin: token, user });
+      return res.json({ token: token, user });
     }
 
     if (user.user_role === 'super_agent') {
-      return res.json({ super_agent: token, user });
+      return res.json({ token: token, user });
     }
 
     if (user.user_role === 'agent') {
-      return res.json({ agent: token, user });
+      return res.json({ token: token, user });
     }
 
-    return res.json({ player: token, user });
+    return res.json({ token: token, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
