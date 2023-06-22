@@ -72,7 +72,7 @@ const resetPassword = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-  const { password, password_confirmation, email } = req.body;
+  const { old_password, password, password_confirmation, email } = req.body;
 
   // check password confirmation
   if (password !== password_confirmation) {
@@ -81,6 +81,12 @@ const changePassword = async (req, res) => {
   
   // find user
   const user = await User.findOne({ email });
+
+  // Compare passwords
+  const isPasswordValid = await bcrypt.compare(old_password, user.password);
+  if (!isPasswordValid) {
+    return res.status(401).json({ error: 'Invalid password' });
+  }
 
   // Hash the password
   const salt = await bcrypt.genSalt(10);

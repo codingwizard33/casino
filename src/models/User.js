@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   full_name: { type: String, required: false },
   user_image: { type: String, required: false },
   country: { type: String, required: false },
+  balance: { type: Number, default: 0 },
   date_of_birth: { type: Date, required: false },
   isVerified: { type: Boolean, default: false },
   player_agent: { type: String, required: false },
