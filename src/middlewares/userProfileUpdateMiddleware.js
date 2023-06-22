@@ -3,7 +3,7 @@ const userProfileUdateMiddleware = async (req, res, next) => {
 
   // check requested data keys
   for (let key in data) {
-    if (!["email", "phone_number", "first_name", "last_name", "country"].includes(key)) {
+    if (!["email", "phone_number", "full_name", "country"].includes(key)) {
       return res.json({ message: `You can not to change ${key} data` });
     }
   }
