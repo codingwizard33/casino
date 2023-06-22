@@ -1,25 +1,26 @@
 import User from '../models/User.js';
 import CoinTransfer from '../models/CoinTransfers.js';
-import CoinWallet from '../models/CoinWallet.js';
 
 const coinTransfer = async (req, res) => {
   const { sender_id, receiver_id, amount } = req.body;
   
-  const senderWallet = await CoinWallet.findByOne({ sender_id });
-  const receiverWallet = await CoinWallet.findByOne({ receiver_id });
-  
-  senderWallet.amount -= amount;
-  await senderWallet.save();
+  const sender = await User.findById(sender_id);
+  const receiver = await User.findById(receiver_id);
 
-  receiverWallet += amount;
-  await receiverWallet.save();
+  const sBalance = sender.balance - amount;
+  sender.balance = sBalance;
+  await sender.save();
 
-  const transfer = new CoinTransfer({
+  const rBalance = receiver.balance + amount;
+  receiver.balance = rBalance;
+  await receiver.save();
+
+  const transaction = new CoinTransfer({
     sender: sender_id,
     receiver: receiver_id,
     amount: amount
   });
-  transfer.save();
+  await transaction.save();
 
   return res.json({ message: 'Transfer success!' });
 };
