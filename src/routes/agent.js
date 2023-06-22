@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.post('/create-player', authMiddleware, verifyMiddleware, agentMiddleware, createPlayer);
 router.post('/accept-player', authMiddleware, verifyMiddleware, agentMiddleware, acceptPlayer);
-router.post('/get-players', authMiddleware, verifyMiddleware, agentMiddleware, getPlayers);
+router.post('/get-players', authMiddleware, verifyMiddleware, getPlayers);
 
 export default router;

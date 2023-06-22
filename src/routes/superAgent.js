@@ -8,6 +8,6 @@ import { getAgents } from '../controllers/getAgentsController.js';
 const router = express.Router();
 
 router.post('/create-agent', authMiddleware, verifyMiddleware, superAgentMiddleware, createAgent);
-router.post('/get-agents', authMiddleware, verifyMiddleware, superAgentMiddleware, getAgents);
+router.post('/get-agents', authMiddleware, verifyMiddleware, getAgents);
 
 export default router;
