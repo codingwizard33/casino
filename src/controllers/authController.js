@@ -50,7 +50,7 @@ const registerUser = async (req, res) => {
     session.endSession();
 
     // Generate verification token
-    const verificationToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const verificationToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
     // Send verification email
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -162,7 +162,7 @@ const loginUser = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
     // Checking user role
     if (user.user_role === 'admin') {
