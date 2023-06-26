@@ -5,6 +5,10 @@ const coinTransfer = async (req, res) => {
   const { sender_id, receiver_id, amount } = req.body;
   
   const sender = await User.findById(sender_id);
+
+  if (sender.balance < amount) {
+    return res.json({ message: 'No availabel coins' });
+  }
   const receiver = await User.findById(receiver_id);
 
   const sBalance = sender.balance - amount;
