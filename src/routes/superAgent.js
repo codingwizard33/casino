@@ -8,7 +8,7 @@ import { agentMiddleware } from '../middlewares/agentMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create-agent', authMiddleware, verifyMiddleware, superAgentMiddleware, agentMiddleware, createAgent);
+router.post('/create-agent', authMiddleware, verifyMiddleware, createAgent);
 router.post('/get-agents', authMiddleware, verifyMiddleware, getAgents);
 
 export default router;

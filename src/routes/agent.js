@@ -8,8 +8,8 @@ import { getPlayers } from '../controllers/getPlayersController.js';
 
 const router = express.Router();
 
-router.post('/create-player', authMiddleware, verifyMiddleware, agentMiddleware, createPlayer);
-router.post('/accept-player', authMiddleware, verifyMiddleware, agentMiddleware, acceptPlayer);
+router.post('/create-player', authMiddleware, verifyMiddleware, createPlayer);
+router.post('/accept-player', authMiddleware, verifyMiddleware, acceptPlayer);
 router.post('/get-players', authMiddleware, verifyMiddleware, getPlayers);
 
 export default router;
