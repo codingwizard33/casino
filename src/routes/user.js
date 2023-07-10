@@ -8,7 +8,7 @@ import { getUser } from '../controllers/getSingleUserController.js';
 
 const router = express.Router();
 
-router.post('/change-user-information', authMiddleware, userProfileUdateMiddleware, userProfileInformationChange);
+router.post('/change-user-information', authMiddleware, userProfileInformationChange);
 router.post('/update-password', authMiddleware, userPasswordUpdate);
 router.post('/refresh-token', authMiddleware, generateAccessToken);
 router.post('/coin-transfer', authMiddleware, coinTransfer);
